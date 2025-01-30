@@ -1,0 +1,55 @@
+---
+
+- name: Ensure custom groups is present
+  ansible.builtin.group:
+    name: "{{ item }}"
+    state: present
+  loop: "{{ custom_groups }}"
+
+- name: Manage users
+  ansible.builtin.user:
+    name: "{{ item.name }}"
+    shell: "{{ item.shell }}"
+    password: "{{ item.password }}"
+    state: "{{ item.state }}"
+    groups: "{{ item.groups | join(',') }}"
+  loop: "{{ users }}"
+  when: item.state != 'absent'
+
+- name: Ensure user's ssh directory exists
+  ansible.builtin.file:
+    path: "/home/{{ item.name }}/.ssh"
+    state: directory
+    owner: "{{ item.name }}"
+    mode: '0700'
+  loop: "{{ users }}"
+  when: item.ssh_key is defined and item.state == 'present'
+
+- name: Add public SSH key for users
+  ansible.builtin.copy:
+    content: "{{ item.ssh_key }}"
+    dest: "/home/{{ item.name }}/.ssh/authorized_keys"
+    owner: "{{ item.name }}"
+    mode: '0600'
+  loop: "{{ users }}"
+  when: item.ssh_key is defined and item.state == 'present'
+
+- name: Install Zsh
+  ansible.builtin.apt:
+    name: zsh
+    state: present
+
+- name: Install Oh My Zsh for users with Zsh shell
+  ansible.builtin.shell: |
+    sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
+  args:
+    creates: "/home/{{ item.name }}/.oh-my-zsh"
+  loop: "{{ users }}"
+  when: item.shell == "/bin/zsh"
+  become: true
+  become_user: "{{ item.name }}"
+
+- name: Set Zsh as default shell for Zsh users
+  ansible.builtin.shell: "chsh -s /bin/zsh {{ item.name }}"
+  loop: "{{ users }}"
+  when: item.shell == "/bin/zsh"

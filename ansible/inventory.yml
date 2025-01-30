@@ -1,0 +1,13 @@
+---
+all:
+  hosts:
+    ubuntu_server:
+      ansible_connection: ssh
+      ansible_host: localhost
+      ansible_port: 2222
+  vars:
+    ansible_ssh_pipelining: true
+    ansible_ssh_transfer_method: piped
+    ansible_user: 'ubuntu'
+    ansible_python_interpreter: /usr/bin/python3
+    ansible_ssh_private_key_file: "~/.ssh/id_rsa"

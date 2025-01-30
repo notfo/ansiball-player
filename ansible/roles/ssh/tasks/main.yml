@@ -1,0 +1,13 @@
+---
+- name: Ensure SSH settings are configured
+  ansible.builtin.lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: "^{{ item.regexp }}"
+    line: "{{ item.line }}"
+    state: present
+  loop:
+    - { regexp: '^PermitRootLogin', line: 'PermitRootLogin {{ ssh.PermitRootLogin }}' }
+    - { regexp: '^PermitEmptyPasswords', line: 'PermitEmptyPasswords {{ ssh.PermitEmptyPasswords }}' }
+    - { regexp: '^LogLevel', line: 'LogLevel {{ ssh.LogLevel }}' }
+    - { regexp: '^X11Forwarding', line: 'X11Forwarding {{ ssh.X11Forwarding }}' }
+  notify: Reload SSH

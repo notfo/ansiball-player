@@ -1,0 +1,62 @@
+# Custom group settings
+custom_groups:
+  - devops
+  - dev
+  - qa
+
+# User settings
+users:
+  - name: "Daniel"
+    shell: "/bin/bash"
+    state: "present"  # User will be created or ensured to exist
+    ssh_key: "ssh-rsa ..."  # SSH public key for the user
+    password: "password"  # User password (consider using hashed passwords for security)
+    groups: ["sudo", "devops"]  # Groups the user belongs to
+  - name: "Nik"
+    shell: "/bin/zsh"
+    state: "present"
+    ssh_key: "ssh-rsa ..."
+    password: "password"
+    groups: ["devops"]
+  - name: "Jack"
+    shell: "/bin/zsh"
+    state: "present"
+    ssh_key: "ssh-rsa ..."
+    password: "password"
+    groups: ["dev"]
+  - name: "Bob"
+    shell: "/bin/bash"
+    state: "absent"  # User will be removed if exists
+    password: ""  # No password set
+    groups: []  # No groups assigned
+  - name: "Alice"
+    shell: "/bin/zsh"
+    state: "present"
+    ssh_key: "ssh-rsa ..."
+    password: "password"
+    groups: ["qa"]
+
+# SSH settings
+ssh:
+  PermitRootLogin: "no"  # Disable root login for security
+  PermitEmptyPasswords: "no"  # Disable empty passwords for security
+  LogLevel: "VERBOSE"  # Set SSH log level to verbose
+  X11Forwarding: "no"  # Disable X11 forwarding for security
+
+# Packages and utilities to be installed on hosts
+pkgs:
+  - htop  # Interactive process viewer
+  - ncdu  # Disk usage analyzer
+  - git  # Version control system
+  - nano  # Text editor
+  - rsync  # File synchronization tool
+
+# Nginx settings
+server_name: "localhost"  # Nginx server name
+root: "/var/www/html"  # Web root directory
+nginx_gzip: "on"  # Enable gzip compression
+nginx_cache_duration: "1h"  # Set cache duration to 1 hour
+
+# Rsync static files paths
+static_files_src: "{{ playbook_dir }}/files/"  # Source directory for static files
+static_files_dest: "/var/www/html/images"  # Destination directory for static files

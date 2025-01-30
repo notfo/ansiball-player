@@ -1,0 +1,12 @@
+---
+- name: Update && upgrade
+  ansible.builtin.apt:
+    update_cache: yes
+    upgrade: yes
+    state: latest
+
+- name: Install packages
+  ansible.builtin.apt:
+    update_cache: yes
+    name: "{{ pkgs }}"
+    state: latest

@@ -1,0 +1,12 @@
+version: '3.8'
+
+services:
+  ubuntu:
+    build: .
+    container_name: ubuntu_server
+    ports:
+      - "2222:22"
+      - "80:80"
+    environment:
+      - SSH_PUBLIC_KEY=${SSH_PUBLIC_KEY}
+    restart: unless-stopped
