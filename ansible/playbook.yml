@@ -5,7 +5,8 @@
     - vars/main.yml
   roles:
     - users
+    - zsh
     - ssh
     - pkgs
     - nginx
-    - rsync
+    - gdown

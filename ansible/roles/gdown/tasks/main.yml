@@ -1,0 +1,28 @@
+---
+- name: Install Python dependencies packages
+  ansible.builtin.apt:
+    name:
+      - python3-pip
+      - python3-virtualenv
+    state: latest
+
+- name: Install gdown pip-package into virtualenv
+  ansible.builtin.pip:
+    name: gdown
+    state: present
+    virtualenv: "{{ ansible_user_dir }}/.venv"
+
+- name: Create directory for static files
+  ansible.builtin.file:
+    path: "{{ static_files_dest }}"
+    state: directory
+    mode: '0755'
+
+- name: Copy script from template
+  ansible.builtin.template:
+    src: gdown-script.py.j2
+    dest: "{{ ansible_user_dir }}/gdown-script.py"
+    owner: root
+    group: root
+    mode: '0644'
+  notify: Run gdown script

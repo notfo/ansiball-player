@@ -1,7 +1,0 @@
-- name: Sync static files to the server using rsync
-  ansible.builtin.synchronize:
-    src: "{{ static_files_src }}"
-    dest: "{{ static_files_dest }}"
-    recursive: yes
-    delete: yes
-    archive: yes

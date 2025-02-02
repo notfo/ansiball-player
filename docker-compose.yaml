@@ -10,3 +10,5 @@ services:
     environment:
       - SSH_PUBLIC_KEY=${SSH_PUBLIC_KEY}
     restart: unless-stopped
+    volumes:
+      - ./nginx-logs/:/var/log/nginx/

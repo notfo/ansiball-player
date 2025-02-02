@@ -1,0 +1,14 @@
+import gdown
+
+def download_and_extract(file_id, output_file, dest_dir):
+    file_path = gdown.cached_download(id=file_id, path=output_file)
+    if file_path:
+        gdown.extractall(path=file_path, to=dest_dir)
+        return True
+
+if __name__ == "__main__":
+    download_and_extract(
+        file_id="{{ gdrive_file_id }}",
+        output_file="{{ output_filename }}",
+        dest_dir="{{ static_files_dest }}"
+    )

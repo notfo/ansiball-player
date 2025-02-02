@@ -13,6 +13,15 @@
       mode: '0644'
     notify: Restart Nginx
 
+  - name: Copy logrotate configuration file
+    ansible.builtin.template:
+      src: logrotate.j2
+      dest: /etc/logrotate.d/nginx
+      owner: root
+      group: root
+      mode: '0644'
+    notify: Restart Nginx
+
   - name: Ensure Nginx is enabled and started
     ansible.builtin.service:
       name: nginx

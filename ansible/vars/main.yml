@@ -49,14 +49,21 @@ pkgs:
   - ncdu  # Disk usage analyzer
   - git  # Version control system
   - nano  # Text editor
-  - rsync  # File synchronization tool
 
 # Nginx settings
 server_name: "localhost"  # Nginx server name
 root: "/var/www/html"  # Web root directory
 nginx_gzip: "on"  # Enable gzip compression
 nginx_cache_duration: "1h"  # Set cache duration to 1 hour
+nginx_log_format: # Set name and template for customizing access logs
+  name: "custom"
+  template: |
+    '$remote_addr - $remote_user [$time_local] '
+    '"$request" $status $body_bytes_sent '
+    '"$http_referer" "$http_user_agent"'
+    ' Время выполнения запроса: $request_time'
 
-# Rsync static files paths
-static_files_src: "{{ playbook_dir }}/files/"  # Source directory for static files
+# Download files from Gdrive and extract to static files dir
+gdrive_file_id: "1L9hsq9ZFB5VbXYJ3kEKH47x9nhxxZEnI"
+output_filename: "static.zip"
 static_files_dest: "/var/www/html/images"  # Destination directory for static files

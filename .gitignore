@@ -1,3 +1,4 @@
 ### Ansible template
 *.retry
 .idea
+nginx-logs

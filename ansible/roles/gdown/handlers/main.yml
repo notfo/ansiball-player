@@ -1,0 +1,6 @@
+---
+- name: Run gdown script
+  ansible.builtin.command:
+    cmd: "{{ ansible_user_dir }}/.venv/bin/python {{ ansible_user_dir }}/gdown-script.py"
+  register: gdown_output
+  failed_when: gdown_output.rc != 0
