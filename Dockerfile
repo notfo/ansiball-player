@@ -6,7 +6,7 @@ RUN apt-get update && \
     apt-get clean && \
     mkdir /var/run/sshd && \
     mkdir -p /home/ubuntu/.ssh/ && \
-    echo 'ubuntu ALL=(ALL) NOPASSWD: ALL' >> /etc/sudoers
+    echo 'ubuntu:password' | chpasswd
 
 COPY entrypoint.sh /entrypoint.sh
 
